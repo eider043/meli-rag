@@ -1,0 +1,10 @@
+id,query,precision@5,recall@5,faithfulness,answer_coverage,critic_ok,n_retrieved
+Q01_ram_ssd,Recomiéndame una laptop con 16GB de RAM y SSD. Da 2-3 opciones.,0.8,0.8,0.0,0.0,False,5.0
+Q02_intel_i7,¿Qué laptops tienen procesador Intel Core i7? Menciona 2-4 modelos.,1.0,1.0,1.0,0.8,True,5.0
+Q03_ryzen5,Busca laptops con procesador AMD Ryzen 5. Devuelve 2-4 modelos.,1.0,1.0,1.0,0.4,True,5.0
+Q04_gaming_gpu,Dame una opción de laptop con GPU dedicada (NVIDIA GTX/RTX) y explica qué GPU tiene.,0.0,0.0,0.6666666666666666,0.6,False,5.0
+Q05_screen_15,¿Qué laptops tienen pantalla de 15 pulgadas (15.x)? Dame 3 ejemplos.,0.6,0.6,1.0,0.6,True,5.0
+Q06_lightweight,Quiero una laptop liviana (peso bajo). Dame 2 opciones y menciona el peso.,1.0,1.0,1.0,0.4,True,5.0
+Q07_battery,¿Qué laptops mencionan buena batería o capacidad de batería alta? Devuelve 2-3 opciones.,0.0,0.0,0.5,0.2,False,5.0
+Q08_budget_value,Busco una laptop con buena relación precio/calidad: 8GB RAM (mínimo) y SSD. Dame 2-3 opciones.,1.0,1.0,0.0,0.0,False,5.0
+MEAN,,0.675,0.675,0.6458333333333333,0.375,0.5,5.0

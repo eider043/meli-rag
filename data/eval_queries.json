@@ -1,0 +1,50 @@
+[
+  {
+    "id": "Q01_ram_ssd",
+    "query": "Recomiéndame una laptop con 16GB de RAM y SSD. Da 2-3 opciones.",
+    "relevant_laptop_ids": ["738","627","514", "137", "842"],
+    "notes": "Marca como relevantes los laptop_id cuyos campos mencionen explícitamente 16GB (RAM/memory) y SSD (storage). Idealmente agrega 3-6 IDs."
+  },
+  {
+    "id": "Q02_intel_i7",
+    "query": "¿Qué laptops tienen procesador Intel Core i7? Menciona 2-4 modelos.",
+    "relevant_laptop_ids": ["412","514","860","137","812"],
+    "notes": "Relevantes: laptop_id con CPU/processor que contenga 'i7' o 'Core i7'. Agrega 3-8 IDs."
+  },
+  {
+    "id": "Q03_ryzen5",
+    "query": "Busca laptops con procesador AMD Ryzen 5. Devuelve 2-4 modelos.",
+    "relevant_laptop_ids": ["522","679","939","281","211"],
+    "notes": "Relevantes: laptop_id donde CPU/processor contenga 'Ryzen 5'. Agrega 3-8 IDs."
+  },
+  {
+    "id": "Q04_gaming_gpu",
+    "query": "Dame una opción de laptop con GPU dedicada (NVIDIA GTX/RTX) y explica qué GPU tiene.",
+    "relevant_laptop_ids": ["622","260","637","300","543"],
+    "notes": "Relevantes: laptop_id con GPU/graphics que contenga 'GTX' o 'RTX' o 'NVIDIA'. Agrega 3-8 IDs."
+  },
+  {
+    "id": "Q05_screen_15",
+    "query": "¿Qué laptops tienen pantalla de 15 pulgadas (15.x)? Dame 3 ejemplos.",
+    "relevant_laptop_ids": ["622","260","637","300","543"],
+    "notes": "Relevantes: laptop_id con display/screen/size que mencione 15, 15.6, 15.4, etc. Agrega 5-12 IDs."
+  },
+  {
+    "id": "Q06_lightweight",
+    "query": "Quiero una laptop liviana (peso bajo). Dame 2 opciones y menciona el peso.",
+    "relevant_laptop_ids": ["584","799","429","903","584"],
+    "notes": "Relevantes: laptop_id con weight/peso explícito. Selecciona los de menor peso en tu subset (p.ej., < 1.5kg si la unidad es kg). Agrega 3-8 IDs."
+  },
+  {
+    "id": "Q07_battery",
+    "query": "¿Qué laptops mencionan buena batería o capacidad de batería alta? Devuelve 2-3 opciones.",
+    "relevant_laptop_ids": ["584","799","429","903","584"],
+    "notes": "Relevantes: laptop_id con campo battery/capacity/battery life. Agrega 3-10 IDs."
+  },
+  {
+    "id": "Q08_budget_value",
+    "query": "Busco una laptop con buena relación precio/calidad: 8GB RAM (mínimo) y SSD. Dame 2-3 opciones.",
+    "relevant_laptop_ids": ["741","661","679","637","281"],
+    "notes": "Relevantes: laptop_id con 8GB RAM y SSD. Si existe price, prioriza menor precio; si no existe, elige modelos con specs claras. Agrega 3-8 IDs."
+  }
+]

@@ -1,0 +1,159 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" version="29.3.6">
+  <diagram id="rag-arch" name="RAG + Critic Agent Architecture">
+    <mxGraphModel dx="1246" dy="664" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane_offline" parent="1" style="swimlane;rounded=1;whiteSpace=wrap;html=1;startSize=28;fillColor=#f5f5f5;strokeColor=#999999;" value="Offline Build (Indexing)" vertex="1">
+          <mxGeometry height="430" width="2140" x="20" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ds_csv" parent="lane_offline" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Dataset&#xa;Laptops_with_technical_specifications.csv" vertex="1">
+          <mxGeometry height="70" width="260" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ingest" parent="lane_offline" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Ingesta + Normalización&#xa;(data_loader.py)&#xa;- columnas&#xa;- NA&#xa;- subset N" vertex="1">
+          <mxGeometry height="90" width="260" x="340" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="chunker" parent="lane_offline" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Chunking 50–120 tokens&#xa;(chunking.py)&#xa;- conserva laptop_id + field&#xa;- genera citations [id:field]" vertex="1">
+          <mxGeometry height="100" width="300" x="650" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="index_store" parent="lane_offline" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Chunk Store&#xa;(lista/dict)&#xa;chunk_id, text, field, laptop_id" vertex="1">
+          <mxGeometry height="70" width="260" x="1010" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="bm25" parent="lane_offline" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="BM25 Index Build&#xa;(retriever_bm25.py)&#xa;- tokenización&#xa;- BM25Okapi" vertex="1">
+          <mxGeometry height="90" width="260" x="1330" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="preview" parent="lane_offline" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Artifacts&#xa;outputs/index_preview.csv" vertex="1">
+          <mxGeometry height="70" width="240" x="1650" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="retriever_obj" parent="lane_offline" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Retriever Object&#xa;BM25Retriever(chunks)" vertex="1">
+          <mxGeometry height="70" width="180" x="1930" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="o1" edge="1" parent="lane_offline" source="ds_csv" style="endArrow=block;html=1;strokeColor=#666666;" target="ingest">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o2" edge="1" parent="lane_offline" source="ingest" style="endArrow=block;html=1;strokeColor=#666666;" target="chunker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o3" edge="1" parent="lane_offline" source="chunker" style="endArrow=block;html=1;strokeColor=#666666;" target="index_store">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o4" edge="1" parent="lane_offline" source="index_store" style="endArrow=block;html=1;strokeColor=#666666;" target="bm25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o5" edge="1" parent="lane_offline" source="chunker" style="endArrow=block;html=1;strokeColor=#666666;" target="preview">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="800" y="220" />
+              <mxPoint x="1300" y="220" />
+              <mxPoint x="1770" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o6" edge="1" parent="lane_offline" source="bm25" style="endArrow=block;html=1;strokeColor=#666666;" target="retriever_obj">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1460" y="40" />
+              <mxPoint x="1760" y="40" />
+              <mxPoint x="2020" y="40" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lane_online" parent="1" style="swimlane;rounded=1;whiteSpace=wrap;html=1;startSize=28;fillColor=#f5f5f5;strokeColor=#999999;" value="Online Inference (RAG + Critic)" vertex="1">
+          <mxGeometry height="520" width="2140" x="20" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="user" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Usuario" vertex="1">
+          <mxGeometry height="60" width="160" x="30" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="query" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" value="Query" vertex="1">
+          <mxGeometry height="60" width="160" x="220" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="retrieve" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Retrieve Top-K (3–5)&#xa;(pipeline.py)&#xa;retriever.search(query)" vertex="1">
+          <mxGeometry height="80" width="240" x="420" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="topk" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Retrieved Chunks&#xa;[laptop_id:field] + text + score" vertex="1">
+          <mxGeometry height="80" width="280" x="700" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="prompt" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Prompt Builder&#xa;(generator.py + llm_openai.py)&#xa;- inserta evidencia&#xa;- reglas: ≤120 palabras&#xa;- JSON output" vertex="1">
+          <mxGeometry height="110" width="310" x="1010" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="llm" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="LLM Generation&#xa;(llm_openai.py)&#xa;OpenAI Chat Completions&#xa;temperature=0" vertex="1">
+          <mxGeometry height="80" width="260" x="1350" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="answer_raw" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" value="Answer (raw)&#xa;+ citations list" vertex="1">
+          <mxGeometry height="80" width="220" x="1640" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="critic" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Critic Agent&#xa;(critic_agent.py)&#xa;- cada oración tiene cita&#xa;- cita ∈ retrieved&#xa;- soporte por overlap&#xa;- faithfulness" vertex="1">
+          <mxGeometry height="110" width="220" x="1890" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="decision" parent="lane_online" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" value="¿critic_ok?" vertex="1">
+          <mxGeometry height="90" width="140" x="980" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="retry" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Retry (máx 2)&#xa;Reglas más estrictas&#xa;(pipeline.py)" vertex="1">
+          <mxGeometry height="80" width="180" x="780" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="final" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Respuesta Final&#xa;≤120 palabras + citas&#xa;[laptop_id:campo]" vertex="1">
+          <mxGeometry height="80" width="250" x="1180" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="logs" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Logs JSONL&#xa;outputs/critic_logs.jsonl&#xa;outputs/eval_runs.jsonl" vertex="1">
+          <mxGeometry height="80" width="260" x="1470" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics" parent="lane_online" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Evaluation&#xa;(evaluation.py)&#xa;Precision@k / Recall@k&#xa;Faithfulness / Coverage&#xa;outputs/metrics_eval.csv" vertex="1">
+          <mxGeometry height="100" width="350" x="1760" y="225" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="lane_online" source="user" style="endArrow=block;html=1;strokeColor=#666666;" target="query">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="lane_online" source="query" style="endArrow=block;html=1;strokeColor=#666666;" target="retrieve">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="lane_online" source="retrieve" style="endArrow=block;html=1;strokeColor=#666666;" target="topk">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="lane_online" source="topk" style="endArrow=block;html=1;strokeColor=#666666;" target="prompt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="lane_online" source="prompt" style="endArrow=block;html=1;strokeColor=#666666;" target="llm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="lane_online" source="llm" style="endArrow=block;html=1;strokeColor=#666666;" target="answer_raw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="lane_online" source="answer_raw" style="endArrow=block;html=1;strokeColor=#666666;" target="critic">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="lane_online" source="critic" style="endArrow=block;html=1;strokeColor=#666666;" target="decision">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2000" y="210" />
+              <mxPoint x="1540" y="210" />
+              <mxPoint x="1050" y="210" />
+            </Array>
+            <mxPoint x="1050" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="lane_online" source="decision" style="endArrow=block;html=1;strokeColor=#2d7600;" target="final" value="Sí">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="lane_online" source="decision" style="endArrow=block;html=1;strokeColor=#b85450;" target="retry" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="lane_online" source="retry" style="endArrow=block;html=1;strokeColor=#b85450;dashed=1;" target="prompt">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="930" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="lane_online" source="final" style="endArrow=block;html=1;strokeColor=#666666;" target="logs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="lane_online" source="logs" style="endArrow=block;html=1;strokeColor=#666666;" target="metrics">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ref" edge="1" parent="1" source="retriever_obj" style="endArrow=block;html=1;strokeColor=#666666;dashed=1;" target="retrieve" value="usa">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2040" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
